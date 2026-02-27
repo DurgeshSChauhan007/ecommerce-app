@@ -19,6 +19,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   const categories = [{id: 'all', name: 'All', icon: "grid"}, ...CATEGORIES]
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | number>('all')
 
   const fetchProducts = async() => {
     setProducts(dummyProducts);
@@ -38,15 +39,18 @@ export default function Home() {
 
         <View>
           <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} className='w-full h-48 rounded-xl' scrollEventThrottle={16} onScroll={(e) => {
-            const slide = Math.ceil(e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width)
+             const slide = Math.round(
+             e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width)
             if (slide!== activeBannerIndex) {
               setActiveBannerIndex(slide)
             }
           }}>
             {BANNERS.map((banner, index) => (
               <View key={index} className='relative w-full h-48 bg-gray-200 overflow-hidden' style={{width: width - 32}}>
-                <Image source={banner.image} className='w-full h-full' resizeMode='cover'
+                <Image source={{uri: banner.image}} className='w-full h-full' resizeMode='cover'
                 />
+
+                <View className='absolute inset-0 bg-black/40' />
 
                 <View className='absolute bottom-4 left-4 z-10'>
                   <Text className='text-white text-2xl font-bold'>{banner.title}</Text>
@@ -55,7 +59,6 @@ export default function Home() {
                     <Text className='text-primary font-bold text-xs'>Get Now</Text>
                   </TouchableOpacity>
                 </View>
-                <View className='absolute inset-0 bg-black/40' />
               </View>
             ))}
           </ScrollView>
@@ -74,7 +77,18 @@ export default function Home() {
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {categories.map((cat: any) => (
-              <CategoryItems key={cat.id} item={cat} isSelected={false} onPress={() => router.push({pathname: "/shop", params: { category: cat.id === 'all' ? '' : cat.name}})} />
+             <CategoryItems
+                key={cat.id}
+                item={cat}
+                isSelected={selectedCategoryId === cat.id}
+                onPress={() => {
+                  setSelectedCategoryId(cat.id)
+                  router.push({
+                    pathname: "/shop",
+                    params: { category: cat.id === 'all' ? '' : cat.name }
+                  })
+                }}
+              />
             ))}
           </ScrollView>
         </View>
@@ -102,7 +116,7 @@ export default function Home() {
 
         <View className='bg-gray-100 p-6 rounded-2xl mb-20 items-center'>
           <Text className='text-2xl font-bold text-primary mb-2 text-center'>Join the Revolution</Text>
-          <Text className='text-secondary text-center mb-4'>Subscribe to our newletter and get 10% off on your first purchase.</Text>
+          <Text className='text-secondary text-center mb-4'>Subscribe to our newsletter and get 10% off on your first purchase.</Text>
           <TouchableOpacity className='bg-primary w-4/5 py-3 rounded-full items-center'>
             <Text className='text-white font-medium text-base'>Subscribe Now</Text>
           </TouchableOpacity>
