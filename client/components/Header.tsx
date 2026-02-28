@@ -21,7 +21,7 @@ export default function Header({ title, showBack, showSearch, showCart, showMenu
         )}
 
         {showMenu &&  (
-            <TouchableOpacity onPress={() => router.back()} className='mr-3'>
+            <TouchableOpacity className='mr-3'>
                 <Ionicons name='menu-outline' size={24} color={COLORS.primary}/>
             </TouchableOpacity>
         )}
@@ -49,7 +49,7 @@ export default function Header({ title, showBack, showSearch, showCart, showMenu
         )}
 
         {showCart && (
-            <TouchableOpacity onPress={() => router.push('/(tab)/cart')}>
+            <TouchableOpacity onPress={() => router.push('/(tabs)/cart')}>
                 <Ionicons name='bag-outline' size={24} color={COLORS.primary} />
                 <View className='absolute -top-1 -right-1 bg-accent w-4 h-4 rounded-full items-center justify-center'>
                     <Text className='text-white text-[10px] font-bold'>{itemCount}</Text>
