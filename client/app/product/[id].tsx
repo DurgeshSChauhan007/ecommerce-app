@@ -6,6 +6,7 @@ import { useWishlist } from '@/context/WishlistContext';
 import { dummyProducts } from '@/assets/assets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/constants';
+import { Product } from '@/constants/types';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 
@@ -13,7 +14,7 @@ const { width } = Dimensions.get('window')
 
 export default function ProductDetails() {
 
-    const {id} = useLocalSearchParams();
+    const { id } = useLocalSearchParams<{ id?: string | string[] }>();
     const router = useRouter();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
@@ -25,14 +26,21 @@ export default function ProductDetails() {
     const [activeImageIndex, setActiveImageIndex] = useState(0);
 
     const fetchProduct = async () => {
-        setProduct(dummyProducts.find((product) => product._id === id) as any) 
+        const normalizedId = Array.isArray(id) ? id[0] : id;
+        if (!normalizedId) {
+            setProduct(null);
+            setLoading(false);
+            return;
+        }
+        const found = dummyProducts.find((p) => p._id === normalizedId) ?? null;
+       setProduct(found); 
         setLoading(false)
     }
 
 
     useEffect(() => {
        fetchProduct()
-    }, [])
+    }, [id])
 
     if (loading){
         return (
@@ -53,7 +61,8 @@ export default function ProductDetails() {
     const isLiked = isInWishlist(product._id);
 
     const handleAddToCart = () => {
-        if (!selectedSize) {
+        const requiresSize = !!product.sizes?.length;
+        if (requiresSize && !selectedSize) {
             Toast.show({
                 type: 'info',
                 text1: 'No Size Selected',
@@ -61,7 +70,8 @@ export default function ProductDetails() {
             })
             return;
         }
-        addToCart(product, selectedSize || "")
+        const sizeToUse = selectedSize ?? product.sizes?.[0] ?? "M";
+        addToCart(product, sizeToUse)
     }
 
   return (
