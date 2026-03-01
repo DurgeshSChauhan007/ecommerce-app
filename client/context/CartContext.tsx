@@ -13,7 +13,7 @@ export type CartItem = {
 
 type CartContextType = {
     cartItems: CartItem[],
-    addTocart: (product: Product, size: string) => Promise<void>;
+    addToCart: (product: Product, size: string) => Promise<void>;
     removeFromCart: (itemId: string, size: string) => Promise<void>;
     updateQuantity: (itemId: string, quantity: number, size: string) => Promise<void>;
     clearCart: () => Promise<void>;
