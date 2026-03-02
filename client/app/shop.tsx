@@ -9,7 +9,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { COLORS } from '@/constants';
 import ProductCard from '@/components/ProductCard';
 
-export default function shop() {
+export default function Shop() {
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ export default function shop() {
     }
 
     try {
-        const start = (pageNumber + 1) * 10;
+        const start = (pageNumber - 1) * 10;
         const end = start + 10;
         const paginatedData = dummyProducts.slice(start, end);
 
