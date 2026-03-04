@@ -4,15 +4,15 @@ import { IOrder } from "../types/index.js";
 const orderItemSchema = new mongoose.Schema({
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
     name: String,
-    quantity: { type: Number, required: true.valueOf, min: 1},
-    price: { type: Number, require: true},
+    quantity: { type: Number, required: true, min: 1},
+    price: { type: Number, required: true},
     size: { type: String }
 })
 
 const orderSchema = new mongoose.Schema<IOrder>({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     orderNumber: { type: String, required: true },
-    items: { orderItemSchema },
+    items: [orderItemSchema],
     shippingAddress: {
         street: { type: String, required: true },
         city: { type: String, required: true },

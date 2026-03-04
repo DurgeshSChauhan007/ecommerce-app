@@ -10,7 +10,7 @@ const AddressSchema = new mongoose.Schema<IAddress>({
     zipCode: { type: String, required: true },
     country: { type: String, required: true },
     isDefault: { type: Boolean, default: false },
-    createdAt: { type: Date, required: Date.now },
+    createdAt: { type: Date, default: Date.now },
 })
 
 export default mongoose.model<IAddress>("Address", AddressSchema)

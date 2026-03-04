@@ -25,9 +25,13 @@ export const addToCart = async (req: Request, res: Response) => {
     try {
         const { productId, quantity = 1, size} = req.body;
 
-        const product = await Product.findById(productId);
+        
         if (!productId) {
-            return res.status(404).json({ success: false, mesaage: "Product not found"});
+            return res.status(400).json({ success: false, message: "Product ID is required" });
+        }
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
         }
 
         if (product.stock < quantity) {
@@ -88,7 +92,9 @@ export const updateCartItem = async (req: Request, res: Response) => {
         }
 
         if (quantity <= 0) {
-            cart.items = cart.items.filter((item) => item.product.toString() != productId)
+            cart.items = cart.items.filter(
+            (item) => !(item.product.toString() === productId && item.size === size)
+         )
         }
         else {
             const product = await Product.findById(productId);
@@ -143,6 +149,7 @@ export const clearCart = async(req: Request, res: Response) => {
             cart.totalAmount = 0;
             await cart.save();
         }
+        return res.json({ success: true, message: "Cart cleared" });
     } catch (error: any) {
         res.status(500).json({ success: false, message: error.message})
     }

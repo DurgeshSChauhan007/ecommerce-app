@@ -49,7 +49,7 @@ export const  updateAdress = async(req: Request, res: Response) => {
         } 
 
         if (isDefault) {
-            return Address.updateMany({ user: req.user._id}, {isDefault: false })
+            await Address.updateMany({ user: req.user._id }, { isDefault: false });
         }
 
         addressItem = await Address.findByIdAndUpdate(req.params.id, { type, street, city, state, zipCode, country, isDefault}, {new: true})

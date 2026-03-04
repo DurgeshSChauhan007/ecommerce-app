@@ -24,7 +24,7 @@ export const getOrders = async (req: Request, res: Response) => {
 // GET /api/orders/:id
 export const getOrder = async (req: Request, res: Response) => {
     try {
-        const order = await Order.find(req.params.id).populate("item.product", "name images");
+        const order = await Order.findById(req.params.id).populate("items.product", "name images");
 
         if (!order) {
             return res.status(404).json({ success: false, message: "Order not found"})
@@ -50,7 +50,8 @@ export const getOrder = async (req: Request, res: Response) => {
 export const createOrder = async (req: Request, res: Response) => {
     try {
         const { shippingAddress, notes } = req.body;
-        const cart = Cart.findOne({ user: req.user._id}).populate("item.product");
+        const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
+
 
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({ success: false, message: "Cart is empty" });
@@ -147,12 +148,12 @@ export const getAllOrders = async (req: Request, res: Response) => {
 
         const total = await Order.countDocuments(query);
 
-        const orders = await Order.find(query).populate("user", "name email").populate("items.product", "name").sort("-createdAt").skip((Number(page) - 1) * Number(limit));
+        const orders = await Order.find(query).populate("user", "name email").populate("items.product", "name").sort("-createdAt").skip((Number(page) - 1) * Number(limit)).limit(Number(limit));
 
         res.json({
             success: true,
             data: orders,
-            pagination: { total, page: Number(page), page: Math.ceil(total / Number(limit))} 
+            pagination: { total, page: Number(page), pages: Math.ceil(total / Number(limit)) }
         })
     } catch (error: any) {
         res.status(500).json({ success: false, message: error.message })

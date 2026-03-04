@@ -12,7 +12,7 @@ export const protect = async(req: Request, res: Response, next:NextFunction) => 
             })
         }
 
-        let user = await User.findOne({})
+        let user = await User.findOne({ clerkId: userId })
         req.user = user;
         next();
     } catch (error) {
