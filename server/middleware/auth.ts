@@ -1,0 +1,38 @@
+import { Response, Request, NextFunction } from "express";
+import User from "../models/User.js";
+
+export const protect = async(req: Request, res: Response, next:NextFunction) => {
+    try {
+        const { userId } = await req.auth();
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Not authorized"
+            })
+        }
+
+        let user = await User.findOne({})
+        req.user = user;
+        next();
+    } catch (error) {
+        console.log("Auth error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Authentication failed"
+        })
+    }
+}
+
+
+export const authorize = (...roles: string[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({
+                success: false,
+                message: "user role is not authorized to access this route."
+            })
+        }
+        next()
+    }
+}
