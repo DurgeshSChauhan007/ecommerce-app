@@ -43,6 +43,10 @@ export const getProduct = async(req: Request, res: Response) => {
 // POST /api/products
 export const createProduct = async(req: Request, res: Response) => {
     try {
+
+        console.log("USER:", req.user);
+        console.log("FILES:", req.files);
+        console.log("BODY:", req.body); 
         let images: string[] = [];
 
         // handle file uploads
@@ -80,6 +84,7 @@ export const createProduct = async(req: Request, res: Response) => {
         if (images.length === 0) {
             return res.status(400).json({ success: false, message: "please upload atleast one image"})
         }
+        
 
         const product = await Product.create(productData);
         res.status(201).json({success: true, data: product})
