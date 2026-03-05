@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Tabs } from 'expo-router'
 import { Feather, Ionicons } from '@expo/vector-icons'
 import { COLORS } from '@/constants'
