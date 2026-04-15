@@ -4,11 +4,12 @@ import { HeaderProps } from '@/constants/types'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { COLORS } from '@/constants'
+import { useCart } from '@/context/CartContext'
 
 export default function Header({ title, showBack, showSearch, showCart, showMenu, showLogo } : HeaderProps) {
 
   const router = useRouter();
-  const { itemCount } = {itemCount: 6};
+  const { itemCount } = useCart();
 
   return (
     <View className='flex-row items-center justify-center px-4 py-3 bg-white'>

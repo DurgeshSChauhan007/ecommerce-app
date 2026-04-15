@@ -8,7 +8,7 @@ import Product from "../models/Products.js";
 export const getOrders = async (req: Request, res: Response) => {
     try {
         const query = { user: req.user._id }
-        const orders = await Order.find(query).populate("item.product", "name images").sort("-createdAt");
+        const orders = await Order.find(query).populate("items.product", "name images").sort("-createdAt");
 
         res.json({
             success: true,
@@ -33,7 +33,6 @@ export const getOrder = async (req: Request, res: Response) => {
         if (order.user.toString() !== req.user._id.toString() && req.user.role !== "admin") {
             return res.status(403).json({ success: false, message: "Not authorized "})
         }
-        
 
         res.json({
             success: true,
@@ -102,7 +101,7 @@ export const createOrder = async (req: Request, res: Response) => {
 
         if (req.body.paymentMethod !== "stripe") {
             cart.items = [];
-            cart.TotalAmount = 0;
+            cart.totalAmount = 0;
             await cart.save();
         }
 

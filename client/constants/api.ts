@@ -3,8 +3,8 @@ import { Platform } from "react-native";
 
 
 const LOCAL_API_URL = Platform.select({
-    android: "http://192.168.43.16:3000/api",
-    ios: "http://192.168.43.16:3000/api",
+    android: "http://10.115.55.31:8081/api",
+    ios: "http://10.115.55.31:8081/api",
     default: "http://localhost:3000/api"
 })
 
