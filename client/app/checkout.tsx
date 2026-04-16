@@ -90,6 +90,13 @@ export default function checkout() {
                 })
                 router.replace("/orders")
             }
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: "Failed to Place Order",
+                    text2: data.message || "Something went wrong",
+                });
+             }
         } catch (error: any) {
             console.log(error);
             Toast.show({

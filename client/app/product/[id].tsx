@@ -29,7 +29,7 @@ export default function ProductDetails() {
         try {
             const { data } = await api.get(`/products/${id}`);
             setProduct(data.data)
-            
+
         } catch (error: any) {
             Toast.show({
                 type: 'error',

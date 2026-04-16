@@ -90,9 +90,10 @@ export function CartProvider({children} : {children: ReactNode}) {
     }
 
     const removeFromCart = async(productId: string, size: string) => {
-        if (isSignedIn) return;
+        if (!isSignedIn) return;
 
         try {
+            setIsLoading(true);
             const token = await getToken();
             const { data } = await api.delete(`/cart/item/${productId}?size=${size}`, { headers: { Authorization: `Bearer ${token}`}})
 
@@ -108,10 +109,11 @@ export function CartProvider({children} : {children: ReactNode}) {
     }
 
     const updateQuantity = async(productId: string, quantity: number, size: string = "M") => {
-        if (!isSignedIn) return;
+         if (!isSignedIn) return;
         if (quantity < 1) return;
 
         try {
+            setIsLoading(true);
             const token = await getToken();
             const { data } = await api.put(`/cart/item/${productId}`, {quantity, size}, { headers: { Authorization: `Bearer ${token}`}})
 
@@ -124,7 +126,6 @@ export function CartProvider({children} : {children: ReactNode}) {
         finally {
             setIsLoading(false)
         }
-        
     }
 
     const clearCart = async() => {

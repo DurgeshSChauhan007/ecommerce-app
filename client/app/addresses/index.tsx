@@ -114,7 +114,7 @@ export default function Addresses() {
                     } catch (error: any) {
                         Toast.show({
                             type: 'error',
-                            text1: 'Failed to Delete Addresses',
+                            text1: 'Failed to Delete Address',
                             text2: error?.response?.data?.message || "Something went wrong"
                         });
                     }

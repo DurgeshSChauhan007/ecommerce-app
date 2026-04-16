@@ -21,7 +21,7 @@ ProductRouter.post(
 )
 
 // Update product (Admin only)
-ProductRouter.put('/:id', upload.array("images", 5), protect, authorize('admin'), updateProduct);
+ProductRouter.put('/:id', protect, authorize('admin'), upload.array("images", 5), updateProduct);
 
 // Delete product (Admin only)
 ProductRouter.delete("/:id", protect, authorize('admin'), deleteProduct)
