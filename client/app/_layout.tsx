@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Toast from "react-native-toast-message";
 import { ClerkProvider } from '@clerk/clerk-expo'
 import { tokenCache } from '@clerk/clerk-expo/token-cache'
+import 'react-native-get-random-values';
 
 export default function RootLayout() {
   return (

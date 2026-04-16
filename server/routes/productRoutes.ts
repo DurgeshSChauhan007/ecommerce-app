@@ -12,10 +12,16 @@ ProductRouter.get("/", getProducts);
 ProductRouter.get('/:id', getProduct)
 
 // Create product (Admin only)
-ProductRouter.post('/', upload.array("images", 5), protect, authorize('admin'), createProduct)
+ProductRouter.post(
+  '/',
+  protect,
+  authorize('admin'),
+  upload.array("images", 5),  
+  createProduct
+)
 
 // Update product (Admin only)
-ProductRouter.put('/:id', upload.array("images", 5), protect, authorize('admin'), updateProduct);
+ProductRouter.put('/:id', protect, authorize('admin'), upload.array("images", 5), updateProduct);
 
 // Delete product (Admin only)
 ProductRouter.delete("/:id", protect, authorize('admin'), deleteProduct)

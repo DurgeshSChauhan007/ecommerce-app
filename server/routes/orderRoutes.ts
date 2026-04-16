@@ -1,10 +1,12 @@
 import express from "express"
 import { authorize, protect } from "../middleware/auth.js";
 import { createOrder, getAllOrders, getOrder, getOrders, updateOrderStatus } from "../controllers/orderController.js";
-import Order from "../models/Order.js";
 
 
 const OrderRouter = express.Router();
+
+// Get all ordeR (Admin only)
+OrderRouter.get('/admin/all', protect, authorize("admin"), getAllOrders);
 
 // Get user orders
 OrderRouter.get('/', protect, getOrders)
@@ -18,7 +20,5 @@ OrderRouter.post('/', protect, createOrder);
 // Update order status (Admin only)
 OrderRouter.put('/:id/status', protect, authorize("admin"), updateOrderStatus);
 
-// Get all ordeR (Admin only)
-OrderRouter.get('/admin/all', protect, authorize("admin"), getAllOrders);
 
 export default OrderRouter;
